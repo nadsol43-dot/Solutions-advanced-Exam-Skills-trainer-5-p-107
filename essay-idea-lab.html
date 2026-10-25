@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Essay Idea Lab — What young people can learn from older people</title>
+<style>
+  *{box-sizing:border-box}
+  :root{
+    --ink:#12323d; --muted:#5c7683; --bg:#eef4f7; --card:#ffffff;
+    --accent:#0d7ea3; --accent-soft:#e2f2f8; --accent-2:#17a2c9;
+    --ok:#1f9d63; --ok-soft:#e4f6ec; --bad:#d9534f; --bad-soft:#fdecea;
+    --warn:#b8770b; --warn-soft:#fdf3e2;
+    --line:#d9e6ec; --radius:16px;
+    --shadow:0 1px 2px rgba(16,50,63,.06), 0 8px 24px rgba(16,50,63,.07);
+  }
+  html,body{margin:0;padding:0}
+  body{
+    background:radial-gradient(1200px 500px at 50% -200px,#dff0f7 0%,transparent 70%),var(--bg);
+    color:var(--ink);
+    font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+    line-height:1.5;-webkit-font-smoothing:antialiased;padding:0 0 64px;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 18px}
+  header.top{padding:26px 0 14px;text-align:center}
+  .kicker{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:5px 12px;border-radius:999px}
+  h1{font-size:clamp(21px,3.6vw,30px);margin:12px 0 6px;letter-spacing:-.01em}
+  .sub{color:var(--muted);font-size:15px;margin:0}
+  .taskbox{background:#fff;border:1px solid var(--line);border-left:4px solid var(--accent-2);border-radius:12px;padding:14px 16px;margin:16px 0 0;font-size:14.5px;box-shadow:var(--shadow);text-align:left}
+  .taskbox b{color:var(--accent)}
+  .taskbox ul{margin:8px 0 0;padding-left:20px}
+  .taskbox li{margin:3px 0}
+
+  nav.tabs{position:sticky;top:0;z-index:20;background:rgba(238,244,247,.9);backdrop-filter:blur(10px);padding:10px 0;margin:18px 0;border-bottom:1px solid rgba(217,230,236,.9)}
+  .tabrow{display:flex;gap:8px;overflow-x:auto;padding:2px;scrollbar-width:none}
+  .tabrow::-webkit-scrollbar{display:none}
+  .tab{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit;font-weight:650;font-size:14px;padding:9px 14px;border-radius:999px;cursor:pointer;transition:.18s;white-space:nowrap}
+  .tab:hover{border-color:var(--accent-2);color:var(--accent)}
+  .tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 6px 16px rgba(13,126,163,.28)}
+  .tab .n{opacity:.55;font-weight:800;margin-right:6px}
+
+  .panel{display:none;animation:fade .25s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+  .card + .card{margin-top:16px}
+  h2{font-size:17px;margin:0 0 4px}
+  .hint{color:var(--muted);font-size:14px;margin:0 0 14px}
+  .howto{background:var(--warn-soft);border:1px solid #f0dfc0;border-radius:11px;padding:10px 13px;font-size:13.5px;color:#7a5310;margin:0 0 16px}
+  .howto b{color:#6b4708}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .spacer{flex:1}
+
+  button.btn{font:inherit;font-weight:650;font-size:14px;padding:10px 16px;border-radius:11px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;transition:.16s}
+  button.btn:hover{border-color:var(--accent-2);color:var(--accent)}
+  button.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  button.btn.primary:hover{background:#0a6c8c;color:#fff}
+  button.btn.ghost{background:transparent;border-color:transparent;color:var(--muted)}
+  button.btn.small{font-size:13px;padding:7px 12px;border-radius:9px}
+  input[type=text],textarea{font:inherit;font-size:14.5px;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;background:#fbfdfe}
+  input[type=text]:focus,textarea:focus{outline:none;border-color:var(--accent-2);box-shadow:0 0 0 3px rgba(23,162,201,.14)}
+  textarea{resize:vertical;min-height:78px;line-height:1.45}
+
+  /* ---------- 1 brainstorm ---------- */
+  .areas{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:820px){.areas{grid-template-columns:1fr}}
+  .area{border:1px solid var(--line);border-radius:14px;padding:14px;background:linear-gradient(180deg,#fff,#f9fdff)}
+  .area h3{margin:0 0 2px;font-size:15.5px;display:flex;align-items:center;gap:8px}
+  .area .ic{width:26px;height:26px;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:800}
+  .area .count{font-size:12px;font-weight:800;color:var(--ok);background:var(--ok-soft);padding:2px 8px;border-radius:999px;margin-left:auto}
+  .area .count.zero{color:var(--muted);background:#eef4f7}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 8px;min-height:6px}
+  .chip{font:inherit;font-size:13px;font-weight:600;padding:5px 10px;border-radius:999px;border:1px solid #cfe3ec;background:#fff;color:#37535f;cursor:pointer;transition:.15s}
+  .chip:hover{border-color:var(--bad);color:var(--bad);background:var(--bad-soft)}
+  .chip.seed{background:var(--accent-soft);border-color:#bfdfec;color:#0a6285}
+  .chip.seed:hover{border-color:var(--accent);color:var(--accent);background:#d5eefa}
+  .addrow{display:flex;gap:6px}
+  .addrow input{font-size:13.5px;padding:8px 10px}
+  .addrow button{flex:0 0 auto;font:inherit;font-weight:700;font-size:14px;padding:0 13px;border-radius:9px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer}
+  .seeds{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;padding-top:10px;border-top:1px dashed #e2eef4}
+  .timerbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+  .tclock{font-variant-numeric:tabular-nums;font-size:26px;font-weight:800;color:var(--accent);min-width:74px}
+  .tclock.done{color:var(--bad)}
+
+  /* ---------- 2 sort ---------- */
+  .sortitem{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:#fff;transition:.18s}
+  .sortitem .txt{font-size:14.5px;margin-bottom:9px}
+  .sortbtns{display:flex;gap:7px;flex-wrap:wrap}
+  .sortbtns button{font:inherit;font-size:12.5px;font-weight:700;padding:6px 11px;border-radius:8px;border:1px solid var(--line);background:#fbfdfe;color:#4b6a77;cursor:pointer;transition:.15s}
+  .sortbtns button:hover{border-color:var(--accent-2);color:var(--accent)}
+  .sortbtns button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .sortbtns button.ok{background:var(--ok-soft);border-color:var(--ok);color:#186b47}
+  .sortbtns button.no{background:var(--bad-soft);border-color:var(--bad);color:#a53430}
+  .sortitem.done{background:#f7fcf9;border-color:#cfe9db}
+  .explain{font-size:13px;color:var(--muted);margin-top:8px;padding-left:2px;display:none}
+  .sortitem.done .explain{display:block}
+  .feedback{font-weight:650;font-size:14.5px;min-height:22px;margin-top:12px}
+  .feedback.ok{color:var(--ok)}
+  .feedback.bad{color:var(--bad)}
+
+  /* ---------- 3 dig ---------- */
+  .pickrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .pickrow button{font:inherit;font-weight:700;font-size:14px;padding:9px 15px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+  .pickrow button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .ladder{display:flex;flex-direction:column;gap:10px;margin-bottom:6px}
+  .step{display:flex;gap:10px;align-items:flex-start}
+  .step .badge{flex:0 0 auto;width:26px;height:26px;border-radius:8px;background:var(--accent-soft);color:var(--accent);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:8px}
+  .step .lbl{font-size:12.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+  .step .body{flex:1}
+  .ghostnote{font-size:13px;color:#8ea4ae;font-style:italic}
+  .arrowdown{text-align:center;color:#b9d6e2;font-size:14px;line-height:1;margin:-2px 0 -2px 22px}
+
+  /* ---------- 4 balance ---------- */
+  .balance{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:760px){.balance{grid-template-columns:1fr}}
+  .col{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}
+  .col h3{font-size:14.5px;margin:0 0 2px}
+  .col.p1{border-top:3px solid var(--ok)}
+  .col.p2{border-top:3px solid var(--accent-2)}
+  .col .lead{font-size:13px;color:var(--muted);margin:0 0 10px}
+  .col ul{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:6px}
+  .col li{font-size:13.5px;background:#f7fcf9;border:1px solid #e2f0e8;border-radius:9px;padding:7px 26px 7px 10px;position:relative;line-height:1.4}
+  .col.p2 li{background:#f6fbfe;border-color:#e0eff6}
+  .col li button{position:absolute;right:6px;top:5px;border:none;background:transparent;color:#a8bcc6;font-size:15px;cursor:pointer;line-height:1;padding:2px}
+  .col li button:hover{color:var(--bad)}
+
+  /* ---------- 5 paraphrase ---------- */
+  .phrasecard{border:1px solid var(--line);border-radius:13px;padding:14px;margin-bottom:12px;background:#fff}
+  .phrasecard .orig{font-size:15px;font-weight:650;margin:0 0 3px}
+  .phrasecard .ctx{font-size:13px;color:var(--muted);margin:0 0 10px}
+  .phrasecard textarea{min-height:62px;font-size:14px}
+  .modelline{margin-top:10px;padding:11px 13px;border-radius:10px;background:var(--ok-soft);border-left:3px solid var(--ok);font-size:14px;color:#186b47;display:none}
+  .modelline.show{display:block}
+  .modelline b{display:block;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--ok);margin-bottom:5px}
+  .modelline .opt{display:block;margin:3px 0}
+
+  /* ---------- 6 plan ---------- */
+  .plantable{display:flex;flex-direction:column;gap:12px}
+  .planrow{border:1px solid var(--line);border-radius:13px;padding:13px;background:#fff}
+  .planrow .top{display:flex;align-items:baseline;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+  .planrow .ttl{font-size:14.5px;font-weight:700}
+  .planrow .goal{font-size:12.5px;color:var(--muted);font-weight:600}
+  .planrow .wc{font-size:12px;font-weight:800;color:var(--muted);margin-left:auto;background:#eef4f7;padding:3px 9px;border-radius:999px}
+  .planrow .wc.good{background:var(--ok-soft);color:var(--ok)}
+  .planrow textarea{min-height:92px}
+  .tip{font-size:12.5px;color:#8ea4ae;margin-top:6px}
+  .totalbar{position:sticky;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:12px 0;margin-top:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .totalbar .num{font-size:20px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums}
+  .totalbar .num.bad{color:var(--bad)}
+  .totalbar .num.good{color:var(--ok)}
+
+  /* ---------- 7 phrases ---------- */
+  .pgroup{margin-bottom:16px}
+  .pgroup h3{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 8px}
+  .pgroup ul{list-style:none;margin:0;padding:0}
+  .pgroup li{font-size:14.5px;padding:6px 0;border-bottom:1px dashed #eaf2f6}
+  .pgroup li:last-child{border-bottom:none}
+  .pgroup li span{color:var(--muted);font-size:13px}
+
+  .pill{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  footer{text-align:center;color:#93a8b3;font-size:12.5px;margin-top:26px}
+  @media(max-width:560px){
+    .tabrow{flex-wrap:wrap;overflow:visible}
+    .tab{font-size:13px;padding:8px 12px}
+    .card{padding:16px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <span class="kicker">Idea lab · essay planning</span>
+    <h1>What can young people learn from older people?</h1>
+    <p class="sub">Six steps from a blank page to a 220–260-word essay plan.</p>
+
+    <div class="taskbox">
+      <b>The task</b> — Your class has had a discussion about what young people can learn from older people. You have made notes below:
+      <ul>
+        <li><b>Areas:</b> money · relationships · work</li>
+        <li><b>Opinions heard:</b> “You have to learn to <b>control your finances</b> when you live on your own.” · “Older people can tell <b>who’s worth it</b>.” · “They’ve <b>been out</b> in the working world, so they know what it’s like.”</li>
+        <li><b>Write</b> an essay (220–260 words) discussing <b>two</b> of the areas, explaining in which area young people could learn most from older people, giving reasons in support of your answer.</li>
+      </ul>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="Steps">
+    <div class="tabrow" role="tablist">
+      <button class="tab" role="tab" data-tab="storm" aria-selected="true"><span class="n">1</span>Fire ideas</button>
+      <button class="tab" role="tab" data-tab="sort" aria-selected="false"><span class="n">2</span>Sort</button>
+      <button class="tab" role="tab" data-tab="dig" aria-selected="false"><span class="n">3</span>Dig deeper</button>
+      <button class="tab" role="tab" data-tab="balance" aria-selected="false"><span class="n">4</span>Balance</button>
+      <button class="tab" role="tab" data-tab="para" aria-selected="false"><span class="n">5</span>Paraphrase</button>
+      <button class="tab" role="tab" data-tab="plan" aria-selected="false"><span class="n">6</span>Build the plan</button>
+      <button class="tab" role="tab" data-tab="bank" aria-selected="false"><span class="n">7</span>Phrase bank</button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- ===== 1 STORM ===== -->
+    <section class="panel active" id="panel-storm" role="tabpanel">
+      <div class="card">
+        <h2>Step 1 · Fire ideas first, judge later</h2>
+        <p class="hint">Two minutes per area. Write short notes, not sentences — aim for <b>4–5 ideas in each area</b>. Never delete an idea at this stage.</p>
+        <div class="howto"><b>How to use:</b> start the timer, type one idea and press Enter. Stuck? Tap <i>Need a spark?</i> — those are seeds to react to, not answers to copy.</div>
+        <div class="timerbar">
+          <div class="tclock" id="tclock">1:00</div>
+          <button class="btn small" id="tstart">Start</button>
+          <button class="btn small" id="treset">Reset</button>
+          <span class="spacer"></span>
+          <span class="hint" style="margin:0">Total ideas so far: <b id="totalIdeas">0</b></span>
+        </div>
+        <div class="areas" id="areas"></div>
+        <div class="row" style="margin-top:16px">
+          <button class="btn" id="clearIdeas">Clear all ideas</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 2 SORT ===== -->
+    <section class="panel" id="panel-sort" role="tabpanel">
+      <div class="card">
+        <h2>Step 2 · Which area does each idea belong to?</h2>
+        <p class="hint">Not every sentence is an idea. Marking the area forces you to notice <em>why</em> the idea matters.</p>
+        <div class="howto"><b>How to use:</b> choose Money, Relationships, Work — or <b>Not an idea</b> for a fact with no message. Instant feedback with a reason.</div>
+        <div id="sortList"></div>
+        <div class="feedback" id="sortFeedback" aria-live="polite"></div>
+        <div class="row" style="margin-top:8px">
+          <button class="btn" id="sortReset">Restart</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 3 DIG ===== -->
+    <section class="panel" id="panel-dig" role="tabpanel">
+      <div class="card">
+        <h2>Step 3 · Dig for depth (the “three whys” ladder)</h2>
+        <p class="hint">An essay idea is not <em>“save money”</em>. It is <em>“save money → because rent and bills arrive before your salary → so you need a buffer, not a budget”</em>. Climb the ladder three times.</p>
+        <div class="howto"><b>How to use:</b> pick one area, answer each step in a few words, and watch the sentence grow at the bottom. Copy that sentence straight into your plan.</div>
+        <div class="pickrow" id="digPicks"></div>
+        <div class="ladder" id="ladder"></div>
+        <div class="card" style="margin-top:14px;background:#f7fcf9;border-color:#d9ece2;box-shadow:none">
+          <div style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ok);margin-bottom:6px">Your argument so far</div>
+          <div id="digOut" style="font-size:15px;line-height:1.55;color:#1c4b38">Fill the steps above…</div>
+          <div class="row" style="margin-top:10px">
+            <button class="btn small" id="copyArg">Copy sentence</button>
+            <button class="btn small ghost" id="clearDig">Clear</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 4 BALANCE ===== -->
+    <section class="panel" id="panel-balance" role="tabpanel">
+      <div class="card">
+        <h2>Step 4 · Find the two sides</h2>
+        <p class="hint">B1/B2 essays win marks for balance. Before you choose which area teaches most, note what older people <em>can</em> teach and where they are <em>not</em> automatically right.</p>
+        <div class="howto"><b>How to use:</b> click a seed to drop it into a column, or type your own. Aim for 3 ideas in each column — you will only need one or two in the essay.</div>
+        <div class="balance">
+          <div class="col p1">
+            <h3>What they can teach us</h3>
+            <p class="lead">Experience, mistakes already made, patience.</p>
+            <ul id="listA"></ul>
+            <div class="addrow"><input id="inA" type="text" placeholder="Add an idea…" aria-label="Add idea to what they can teach us"><button data-add="A">+</button></div>
+            <div class="seeds" id="seedsA"></div>
+          </div>
+          <div class="col p2">
+            <h3>Where young people have the edge</h3>
+            <p class="lead">Technology, changing rules, new kinds of work.</p>
+            <ul id="listB"></ul>
+            <div class="addrow"><input id="inB" type="text" placeholder="Add an idea…" aria-label="Add idea to where young people have the edge"><button data-add="B">+</button></div>
+            <div class="seeds" id="seedsB"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 5 PARAPHRASE ===== -->
+    <section class="panel" id="panel-para" role="tabpanel">
+      <div class="card">
+        <h2>Step 5 · Paraphrase the notes (never copy them)</h2>
+        <p class="hint">The notes say the words; your essay must say them differently. Write your version first, then compare with the models.</p>
+        <div class="howto"><b>How to use:</b> type a paraphrase → <i>Show models</i> → underline one phrase worth stealing. Aim for 2 models beaten, not just 2 read.</div>
+        <div id="paraList"></div>
+      </div>
+    </section>
+
+    <!-- ===== 6 PLAN ===== -->
+    <section class="panel" id="panel-plan" role="tabpanel">
+      <div class="card">
+        <h2>Step 6 · Build the plan (5 paragraphs, 220–260 words)</h2>
+        <p class="hint">Plan first, write second. Short notes are fine — but if you write full sentences here, this <em>is</em> your essay, so watch the counter.</p>
+        <div class="howto"><b>How to use:</b> fill each box with notes, then write the essay from them. Press <i>Copy my plan</i> to keep it — everything saves automatically in this browser.</div>
+        <div class="plantable" id="plantable"></div>
+        <div class="totalbar">
+          <span class="hint" style="margin:0">Planned words:</span>
+          <span class="num" id="planTotal">0</span>
+          <span class="hint" style="margin:0">/ target 220–260 in the finished essay</span>
+          <span class="spacer"></span>
+          <button class="btn small" id="copyPlan">Copy my plan</button>
+          <button class="btn small" id="clearPlan">Clear</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 7 BANK ===== -->
+    <section class="panel" id="panel-bank" role="tabpanel">
+      <div class="card">
+        <h2>Phrase bank for this essay</h2>
+        <p class="hint">Use 4–6 of these. A phrase per sentence is plenty — the ideas must still be yours.</p>
+        <div id="bankBody"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>Idea lab · works offline · progress saved in this browser</footer>
+</div>
+
+<script>
+/* ================= helpers ================= */
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const store = {
+  get(k,d){ try{ const v=localStorage.getItem('idealab_'+k); return v===null?d:JSON.parse(v); }catch(e){ return d; } },
+  set(k,v){ try{ localStorage.setItem('idealab_'+k, JSON.stringify(v)); }catch(e){} }
+};
+function copyText(text){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).catch(()=>fallbackCopy(text));
+  } else fallbackCopy(text);
+  flash();
+}
+function fallbackCopy(text){
+  const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); }catch(e){}
+  document.body.removeChild(ta);
+}
+function flash(){
+  const d=document.createElement('div');
+  d.textContent='Copied!';
+  d.style.cssText='position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#1f9d63;color:#fff;font-weight:700;font-size:14px;padding:10px 18px;border-radius:999px;z-index:999;box-shadow:0 8px 24px rgba(0,0,0,.18)';
+  document.body.appendChild(d);
+  setTimeout(()=>d.remove(), 1400);
+}
+const wc = s => (s.trim().match(/[A-Za-z0-9'’\-]+/g)||[]).length;
+
+/* tabs */
+$$('.tab').forEach(t => t.addEventListener('click', () => {
+  $$('.tab').forEach(x => x.setAttribute('aria-selected','false'));
+  t.setAttribute('aria-selected','true');
+  $$('.panel').forEach(p => p.classList.remove('active'));
+  $('#panel-'+t.dataset.tab).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+
+/* ================= 1 STORM ================= */
+const AREAS = [
+  { key:'money', icon:'£', title:'Money',
+    seeds:['They pay bills before they buy things','They never use credit for small purchases','They keep a written record of spending','They save a little every month, not once a year'] },
+  { key:'relationships', icon:'♥', title:'Relationships',
+    seeds:['They listen more than they speak','They think a friend is for years, not for Friday night','They say sorry first after an argument','They notice when someone is quiet and ask why'] },
+  { key:'work', icon:'★', title:'Work',
+    seeds:['They know a bad boss is not a reason to quit immediately','They ask for advice before they complain','They keep quiet in meetings until they understand the issue','They expect promotion to take years, not weeks'] }
+];
+const ideas = store.get('ideas', {money:[],relationships:[],work:[]});
+const areaHost = $('#areas');
+
+AREAS.forEach(a => {
+  const box = document.createElement('div');
+  box.className='area';
+  box.innerHTML =
+    '<h3><span class="ic">'+a.icon+'</span>'+a.title+'<span class="count'+(ideas[a.key].length?'':' zero')+'" data-count="'+a.key+'">'+ideas[a.key].length+'</span></h3>'+
+    '<div class="chips" data-chips="'+a.key+'"></div>'+
+    '<div class="addrow"><input type="text" data-input="'+a.key+'" placeholder="One idea, 5 words…" aria-label="Add idea: '+a.title+'"><button data-addarea="'+a.key+'">+</button></div>'+
+    '<div class="seeds"><button class="btn small ghost" data-spark="'+a.key+'" style="padding:4px 8px;font-size:12px">Need a spark? ▾</button></div>';
+  areaHost.appendChild(box);
+});
+
+function renderArea(key){
+  const host = areaHost.querySelector('[data-chips="'+key+'"]');
+  host.innerHTML='';
+  ideas[key].forEach((txt, i) => {
+    const c=document.createElement('button');
+    c.className='chip'; c.textContent=txt; c.title='Click to remove';
+    c.addEventListener('click',()=>{ ideas[key].splice(i,1); saveIdeas(); renderArea(key); });
+    host.appendChild(c);
+  });
+  const counter = areaHost.querySelector('[data-count="'+key+'"]');
+  counter.textContent = ideas[key].length;
+  counter.classList.toggle('zero', ideas[key].length===0);
+  const total = ideas.money.length+ideas.relationships.length+ideas.work.length;
+  $('#totalIdeas').textContent = total;
+  store.set('ideasTotal', total);
+}
+function saveIdeas(){ store.set('ideas', ideas); }
+
+function addIdea(key, val){
+  const v = (val||'').trim();
+  if(!v) return;
+  if(!ideas[key].some(x=>x.toLowerCase()===v.toLowerCase())) ideas[key].push(v);
+  saveIdeas(); renderArea(key);
+}
+areaHost.addEventListener('click', e => {
+  const add = e.target.closest('[data-addarea]');
+  if(add){ const key=add.dataset.addarea; const inp=areaHost.querySelector('[data-input="'+key+'"]'); addIdea(key, inp.value); inp.value=''; inp.focus(); return; }
+  const spark = e.target.closest('[data-spark]');
+  if(spark){
+    const key=spark.dataset.spark;
+    const box=spark.parentElement;
+    const cfg=AREAS.find(a=>a.key===key);
+    const open = box.dataset.open==='1';
+    if(open){ box.innerHTML='<button class="btn small ghost" data-spark="'+key+'" style="padding:4px 8px;font-size:12px">Need a spark? ▾</button>'; box.dataset.open='0'; return; }
+    box.dataset.open='1';
+    box.innerHTML='<span style="font-size:12px;color:#8ea4ae;font-weight:700;margin-right:2px">React to one:</span>';
+    cfg.seeds.forEach(s=>{
+      const b=document.createElement('button'); b.className='chip seed'; b.textContent=s;
+      b.addEventListener('click',()=>{ addIdea(key,s); });
+      box.appendChild(b);
+    });
+  }
+});
+areaHost.addEventListener('keydown', e => {
+  if(e.key==='Enter'){
+    const inp=e.target.closest('[data-input]');
+    if(inp){ addIdea(inp.dataset.input, inp.value); inp.value=''; }
+  }
+});
+AREAS.forEach(a=>renderArea(a.key));
+$('#totalIdeas').textContent = ideas.money.length+ideas.relationships.length+ideas.work.length;
+
+$('#clearIdeas').addEventListener('click', () => {
+  if(!confirm('Delete all your brainstorm ideas?')) return;
+  AREAS.forEach(a=>ideas[a.key]=[]);
+  saveIdeas(); AREAS.forEach(a=>renderArea(a.key));
+});
+
+/* timer */
+const timer={total:60,left:60,id:null,running:false};
+function paintT(){ const m=Math.floor(timer.left/60), s=timer.left%60; const el=$('#tclock'); el.textContent=m+':'+String(s).padStart(2,'0'); el.classList.toggle('done',timer.left===0); }
+$('#tstart').addEventListener('click',()=>{
+  if(timer.running){ clearInterval(timer.id); timer.running=false; $('#tstart').textContent='Start'; return; }
+  if(timer.left===0) timer.left=timer.total;
+  timer.running=true; $('#tstart').textContent='Pause';
+  timer.id=setInterval(()=>{ timer.left--; if(timer.left<=0){ timer.left=0; paintT(); clearInterval(timer.id); timer.running=false; $('#tstart').textContent='Start'; } else paintT(); },1000);
+});
+$('#treset').addEventListener('click',()=>{ clearInterval(timer.id); timer.running=false; timer.left=timer.total; $('#tstart').textContent='Start'; paintT(); });
+paintT();
+
+/* ================= 2 SORT ================= */
+const SORT = [
+  { t:'“They never buy anything on credit if they can save for it first.”', a:'money', why:'Money: a spending habit built on patience.' },
+  { t:'“They listen to the whole story before they give an opinion.”', a:'relationships', why:'Relationships: listening is a skill you can copy.' },
+  { t:'“They have already made the mistake of trusting the wrong colleague.”', a:'work', why:'Work: experience of other people’s motives.' },
+  { t:'“They keep a notebook of what they spend every week.”', a:'money', why:'Money: a concrete, teachable method.' },
+  { t:'“They think a friendship should survive a boring period.”', a:'relationships', why:'Relationships: expectations about time.' },
+  { t:'“They know that a first salary is a starting point, not a verdict.”', a:'work', why:'Work: perspective on career progress.' },
+  { t:'“My grandmother lives in a flat on the third floor.”', a:'none', why:'Not an idea: it is a fact with no message for young people.' },
+  { t:'“They were born a long time ago.”', a:'none', why:'Not an idea: true but empty — no lesson, no reason.' },
+  { t:'“They do not feel they must answer every message immediately.”', a:'relationships', why:'Relationships: managing pressure in friendships.' }
+];
+let sortState = store.get('sort', {});
+function renderSort(){
+  const host=$('#sortList'); host.innerHTML='';
+  SORT.forEach((it,i)=>{
+    const chosen=sortState[i];
+    const d=document.createElement('div');
+    d.className='sortitem'+(chosen?' done':'');
+    d.innerHTML='<div class="txt">'+it.t+'</div>'+
+      '<div class="sortbtns">'+
+        ['money','relationships','work','none'].map(k=>{
+          const label = k==='none'?'Not an idea':k.charAt(0).toUpperCase()+k.slice(1);
+          let cls='';
+          if(chosen){ if(k===chosen) cls = (chosen===it.a)?'ok':'no'; }
+          return '<button data-i="'+i+'" data-k="'+k+'" class="'+cls+'"'+(chosen?' disabled':'')+'>'+label+'</button>';
+        }).join('')+
+      '</div>'+
+      '<div class="explain">'+ (chosen===it.a?'✓ ':'→ ') + it.why + (chosen && chosen!==it.a?' <em>(Correct answer: '+(it.a==='none'?'not an idea':it.a)+'.)</em>':'') +'</div>';
+    host.appendChild(d);
+  });
+  const done=Object.keys(sortState).length;
+  const right=Object.keys(sortState).filter(i=>sortState[i]===SORT[i].a).length;
+  const fb=$('#sortFeedback');
+  if(done===SORT.length){
+    fb.className='feedback '+(right>=8?'ok':'bad');
+    fb.textContent=right+'/'+SORT.length+' correct.'+(right>=8?' You can tell an idea from a fact now — go and check your own brainstorm for “empty” ideas.':' Remember: an idea says something <em>teachable</em> about a habit, an attitude or a consequence.');
+    fb.innerHTML=fb.textContent;
+  } else { fb.textContent=''; fb.className='feedback'; }
+}
+$('#sortList').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-i]'); if(!b||b.disabled) return;
+  sortState[b.dataset.i]=b.dataset.k; store.set('sort',sortState); renderSort();
+});
+$('#sortReset').addEventListener('click',()=>{ sortState={}; store.set('sort',sortState); renderSort(); });
+renderSort();
+
+/* ================= 3 DIG ================= */
+const DIG = {
+  money: {
+    label:'Money',
+    steps:[
+      {lbl:'The lesson', ph:'Older people teach us to …'},
+      {lbl:'Why it matters now', ph:'Because at 18–20 you …'},
+      {lbl:'What happens if you ignore it', ph:'If you don’t, then …'},
+      {lbl:'A real example', ph:'For example, my …'}
+    ]
+  },
+  relationships: {
+    label:'Relationships',
+    steps:[
+      {lbl:'The lesson', ph:'Older people teach us to …'},
+      {lbl:'Why it matters now', ph:'Because friendships at this age …'},
+      {lbl:'What happens if you ignore it', ph:'If you don’t, then …'},
+      {lbl:'A real example', ph:'For example, my …'}
+    ]
+  },
+  work: {
+    label:'Work',
+    steps:[
+      {lbl:'The lesson', ph:'Older people teach us to …'},
+      {lbl:'Why it matters now', ph:'Because a first job …'},
+      {lbl:'What happens if you ignore it', ph:'If you don’t, then …'},
+      {lbl:'A real example', ph:'For example, my …'}
+    ]
+  }
+};
+let digArea = store.get('digArea','money');
+const digData = store.get('digData', {money:['','','',''],relationships:['','','',''],work:['','','','']});
+function renderDigPicks(){
+  const host=$('#digPicks'); host.innerHTML='';
+  Object.keys(DIG).forEach(k=>{
+    const b=document.createElement('button');
+    b.textContent=DIG[k].label; b.className = k===digArea?'on':'';
+    b.addEventListener('click',()=>{ digArea=k; store.set('digArea',k); renderDigPicks(); renderDig(); });
+    host.appendChild(b);
+  });
+}
+function renderDig(){
+  const host=$('#ladder'); host.innerHTML='';
+  DIG[digArea].steps.forEach((s,i)=>{
+    if(i>0){
+      const ar=document.createElement('div'); ar.className='arrowdown'; ar.textContent='↓ then why?'; host.appendChild(ar);
+    }
+    const step=document.createElement('div'); step.className='step';
+    step.innerHTML='<div class="badge">'+(i+1)+'</div><div class="body"><div class="lbl">'+s.lbl+'</div></div>';
+    const ta=document.createElement('textarea');
+    ta.placeholder=s.ph; ta.value=digData[digArea][i]||'';
+    ta.style.minHeight='52px';
+    ta.addEventListener('input',()=>{ digData[digArea][i]=ta.value; store.set('digData',digData); paintDigOut(); });
+    step.querySelector('.body').appendChild(ta);
+    host.appendChild(step);
+  });
+  paintDigOut();
+}
+function paintDigOut(){
+  const v=digData[digArea];
+  const parts=[];
+  if(v[0]) parts.push(v[0].trim().replace(/\.$/,''));
+  if(v[1]) parts.push(v[1].trim().replace(/^(because|since)\s+/i,'').replace(/\.$/,''));
+  if(v[2]) parts.push(v[2].trim().replace(/\.$/,''));
+  let out='';
+  if(parts.length){
+    out = parts[0].charAt(0).toUpperCase()+parts[0].slice(1);
+    if(parts[1]) out += ' — this matters because ' + parts[1].charAt(0).toLowerCase()+parts[1].slice(1);
+    if(parts[2]) out += ', and if it is ignored, ' + parts[2].charAt(0).toLowerCase()+parts[2].slice(1);
+    if(v[3]){
+      let ex = v[3].trim().replace(/\.$/,'');
+      ex = ex.replace(/^for example,?\s*/i,'');
+      ex = ex.charAt(0).toUpperCase() + ex.slice(1);
+      out += '. For example, ' + ex.charAt(0).toLowerCase() + ex.slice(1);
+    }
+    out += '.';
+  }
+  $('#digOut').textContent = out || 'Fill the steps above…';
+}
+$('#copyArg').addEventListener('click',()=>{
+  const t=$('#digOut').textContent;
+  if(t && t.indexOf('Fill the steps')===-1) copyText(t);
+});
+$('#clearDig').addEventListener('click',()=>{
+  digData[digArea]=['','','','']; store.set('digData',digData); renderDig();
+});
+renderDigPicks(); renderDig();
+
+/* ================= 4 BALANCE ================= */
+let sides = store.get('sides', {A:[], B:[]});
+const SEEDS = {
+  A:['they have seen how a friendship survives a bad year','they know which mistakes are expensive','they are not impressed by appearance','they ask before they assume'],
+  B:['older people can be unfair about new kinds of jobs','they sometimes give advice from an old job market','they can be too cautious with money','they may not understand online friendships']
+};
+function renderSides(){
+  ['A','B'].forEach(k=>{
+    const ul=$('#list'+k); ul.innerHTML='';
+    if(sides[k].length===0){
+      const li=document.createElement('li'); li.style.cssText='background:transparent;border:none;padding:2px 0;color:#a8bcc6;font-size:13px';
+      li.textContent='No ideas yet — click a suggestion below.'; ul.appendChild(li);
+    }
+    sides[k].forEach((t,i)=>{
+      const li=document.createElement('li');
+      li.innerHTML='<span></span><button title="Remove">×</button>';
+      li.querySelector('span').textContent=t;
+      li.querySelector('button').addEventListener('click',()=>{ sides[k].splice(i,1); store.set('sides',sides); renderSides(); });
+      ul.appendChild(li);
+    });
+    const sh=$('#seeds'+k); sh.innerHTML='';
+    SEEDS[k].forEach(s=>{
+      if(sides[k].includes(s)) return;
+      const b=document.createElement('button'); b.className='chip seed'; b.textContent=s;
+      b.addEventListener('click',()=>{ sides[k].push(s); store.set('sides',sides); renderSides(); });
+      sh.appendChild(b);
+    });
+  });
+}
+$$('[data-add]').forEach(btn=>{
+  const k=btn.dataset.add; const inp=$('#in'+k);
+  const go=()=>{ const v=inp.value.trim(); if(!v) return; sides[k].push(v); inp.value=''; store.set('sides',sides); renderSides(); };
+  btn.addEventListener('click',go);
+  inp.addEventListener('keydown',e=>{ if(e.key==='Enter') go(); });
+});
+renderSides();
+
+/* ================= 5 PARAPHRASE ================= */
+const PARA = [
+  { orig:'control your finances', ctx:'“You have to learn to control your finances when you live on your own.”',
+    models:['manage your money sensibly','keep your spending under control','plan what you spend and what you save'] },
+  { orig:'who’s worth it', ctx:'“Older people can tell who’s worth it.”',
+    models:['which people deserve your time and trust','who is a real friend and who is not','which relationships are worth investing in'] },
+  { orig:'been out in the working world', ctx:'“They’ve been out in the working world, so they know what it’s like.”',
+    models:['have years of experience of paid work','have already worked in real companies','have seen how workplaces really operate'] }
+];
+const paraData = store.get('para', {});
+const paraHost = $('#paraList');
+PARA.forEach((p,i)=>{
+  const d=document.createElement('div');
+  d.className='phrasecard';
+  d.innerHTML='<p class="orig">“'+p.orig+'”</p><p class="ctx">'+p.ctx+'</p>'+
+    '<textarea placeholder="My paraphrase…" aria-label="Paraphrase for '+p.orig+'"></textarea>'+
+    '<div class="row" style="margin-top:8px"><button class="btn small" data-show="'+i+'">Show models</button>'+
+    '<span class="hint" style="margin:0;font-size:12.5px" data-count="'+i+'">0 words</span></div>'+
+    '<div class="modelline" data-model="'+i+'"><b>Model paraphrases</b>'+p.models.map(m=>'<span class="opt">• '+m+'</span>').join('')+'</div>';
+  paraHost.appendChild(d);
+  const ta=d.querySelector('textarea');
+  ta.value = paraData[i]||'';
+  ta.addEventListener('input',()=>{
+    paraData[i]=ta.value; store.set('para',paraData);
+    d.querySelector('[data-count="'+i+'"]').textContent = wc(ta.value)+' words';
+  });
+  d.querySelector('[data-count="'+i+'"]').textContent = wc(ta.value)+' words';
+  d.querySelector('[data-show]').addEventListener('click',()=>{
+    d.querySelector('[data-model]').classList.toggle('show');
+  });
+});
+
+/* ================= 6 PLAN ================= */
+const PLAN = [
+  { id:'intro', ttl:'Introduction', goal:'~45 words', tip:'Paraphrase the task + say which two areas and which one teaches more. No new arguments.', ph:'These days … Some people believe that young people can learn a lot from the older generation, especially about … and …. This essay will argue that the most important area is …' },
+  { id:'p1', ttl:'Area 1', goal:'~70 words', tip:'Topic sentence → lesson → why it matters → example. Use one phrase from the bank.', ph:'The first area is … Older people can teach … because … For instance, …' },
+  { id:'p2', ttl:'Area 2', goal:'~70 words', tip:'Same shape, different area. Add a contrast: “Unlike Area 1, …” or “However, …”.', ph:'A second area is … While … , … However, …' },
+  { id:'p3', ttl:'Which teaches more + why', goal:'~45 words', tip:'This is the question! Choose one area, give two reasons, and admit the other side.', ph:'On balance, I would argue that … teaches more, because … and …. Although …, …' },
+  { id:'concl', ttl:'Conclusion', goal:'~35 words', tip:'Restate the answer in new words. No new ideas, no new examples.', ph:'In conclusion, … To sum up, …' }
+];
+const planData = store.get('plan', {});
+const planHost = $('#plantable');
+PLAN.forEach(p=>{
+  const d=document.createElement('div');
+  d.className='planrow';
+  d.innerHTML='<div class="top"><span class="ttl">'+p.ttl+'</span><span class="goal">'+p.goal+'</span><span class="wc" data-wc="'+p.id+'">0 words</span></div>'+
+    '<textarea placeholder="'+p.ph+'" aria-label="'+p.ttl+'"></textarea>'+
+    '<div class="tip">'+p.tip+'</div>';
+  planHost.appendChild(d);
+  const ta=d.querySelector('textarea');
+  ta.value=planData[p.id]||'';
+  const upd=()=>{
+    planData[p.id]=ta.value; store.set('plan',planData);
+    const n=wc(ta.value);
+    const el=d.querySelector('[data-wc="'+p.id+'"]');
+    el.textContent=n+' words';
+    el.classList.toggle('good', n>=12);
+    const total=PLAN.reduce((a,x)=>a+wc(planData[x.id]||''),0);
+    const tot=$('#planTotal'); tot.textContent=total;
+    tot.className='num '+(total>=220&&total<=260?'good':(total>260?'bad':''));
+  };
+  ta.addEventListener('input',upd);
+  upd();
+});
+$('#copyPlan').addEventListener('click',()=>{
+  let out='ESSAY PLAN — What young people can learn from older people\n\n';
+  PLAN.forEach(p=>{ out += p.ttl.toUpperCase()+'\n'+(planData[p.id]||'—')+'\n\n'; });
+  out += 'Total planned words: '+PLAN.reduce((a,x)=>a+wc(planData[x.id]||''),0);
+  copyText(out);
+});
+$('#clearPlan').addEventListener('click',()=>{
+  if(!confirm('Clear the whole plan?')) return;
+  PLAN.forEach(p=>planData[p.id]=''); store.set('plan',planData);
+  $$('#plantable textarea').forEach(t=>t.value='');
+  $$('#plantable [data-wc]').forEach(e=>{ e.textContent='0 words'; e.classList.remove('good'); });
+  $('#planTotal').textContent='0'; $('#planTotal').className='num';
+});
+
+/* ================= 7 BANK ================= */
+const BANK = [
+  { h:'Introducing the topic', items:[
+    ['It is often said that …','introduces a common view you can then support or question'],
+    ['These days, many young people …','a neutral opener that avoids “nowadays” clichés'],
+    ['The older generation has always played a role in …','signals the focus of the essay']
+  ]},
+  { h:'Giving your opinion', items:[
+    ['In my view, …','direct but formal'],
+    ['It seems to me that …','softens a claim'],
+    ['I would argue that …','strong, academic, essay-ready']
+  ]},
+  { h:'Adding balance', items:[
+    ['While older people can …, young people are often better at …','one sentence, both sides'],
+    ['It could be argued that …, but …','concede then counter'],
+    ['However, this does not mean that …','stops you sounding one-sided']
+  ]},
+  { h:'Giving reasons and examples', items:[
+    ['because / since / as …','the reason must follow, not a new idea'],
+    ['For instance, my aunt …','a short, real example beats a long invented one'],
+    ['As a result, …','shows the consequence of your example']
+  ]},
+  { h:'Deciding (the “most” question)', items:[
+    ['On balance, …','classic conclusion phrase'],
+    ['Weighing up the different factors, I would say …','from the report unit — works in essays too'],
+    ['… has the edge over …, because …','compares the two areas directly'],
+    ['To sum up, …','closes without repeating the introduction']
+  ]}
+];
+$('#bankBody').innerHTML = BANK.map(g =>
+  '<div class="pgroup"><h3>'+g.h+'</h3><ul>'+g.items.map(i=>'<li><b>'+i[0]+'</b><br><span>'+i[1]+'</span></li>').join('')+'</ul></div>'
+).join('');
+</script>
+</body>
+</html>
